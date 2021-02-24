@@ -1,18 +1,51 @@
 import React,{Component,Fragment} from 'react'
+import PostForm from './Postform'
 
 class Posts extends Component{
 
+    constructor(props){
+        super(props);
+        this.state ={
+            posts:[]
+        }
+    }
+
     componentWillMount(){
-        console.log("mounted")
+       fetch('https://jsonplaceholder.typicode.com/posts')
+       .then(res=>res.json())
+       .then(data =>{
+           this.setState({posts:data})
+       })
     }
 
     render(){
+
+        const postItems = this.state.posts.map(post=>(
+            <div key={post.id}>
+                <div className="card">
+                    <h3>{post.title}</h3>
+                    <p>{post.body}</p>
+                </div>
+            </div>
+        ))
+
         return(
             <div>
+                <div >
+                <PostForm/>
+                </div>
+            <hr/>
                 <h1>Posts</h1>
+                {postItems}
             </div>
         )
     }
+
+
+
+  
 }
+
+
 
 export default Posts;
